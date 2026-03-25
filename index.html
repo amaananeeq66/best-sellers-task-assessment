@@ -75,6 +75,7 @@
         </section>
     </main>
 
+    <!-- JS: Products + Stars + Badges + createCardMarkup + renderProducts + Mobile Toggle + Desktop Scrollbar -->
     <script>
         const products = [
             { id: 1, name: "OUTSIDE VIBES T-SHIRT SUNSHINE", price: 104.95, reviews: 1234, image: "", hoverImage: "", badges: ["BEST SELLER"], cardBgClass: "bg-[#f4cf2f]" },
@@ -142,7 +143,7 @@
 
         renderProducts();
 
-        // --- Mobile Show More / Show Less ---
+
         const showMoreBtn = document.getElementById("showMoreBtn");
         const mobileMorePanel = document.getElementById("mobileMorePanel");
 
@@ -165,6 +166,55 @@
         });
 
         setMobileExpanded(false);
+
+
+        const desktopRail = document.getElementById("desktopRail");
+        const desktopScrollbar = document.getElementById("desktopScrollbar");
+        const desktopThumb = document.getElementById("desktopThumb");
+
+        function updateScrollbarThumb() {
+            const visibleWidth = desktopRail.clientWidth;
+            const contentWidth = desktopRail.scrollWidth;
+            const ratio = visibleWidth / contentWidth;
+            const thumbWidth = Math.max(desktopScrollbar.clientWidth * ratio, 80);
+            const maxThumbTravel = desktopScrollbar.clientWidth - thumbWidth;
+            const thumbLeft = (desktopRail.scrollLeft / (contentWidth - visibleWidth)) * maxThumbTravel;
+
+            desktopThumb.style.width = `${thumbWidth}px`;
+            desktopThumb.style.transform = `translate(${thumbLeft}px, -50%)`;
+        }
+
+        let isDraggingThumb = false;
+
+        desktopThumb.addEventListener("pointerdown", (e) => {
+            isDraggingThumb = true;
+            const startX = e.clientX - desktopThumb.getBoundingClientRect().left;
+
+            desktopThumb.setPointerCapture(e.pointerId);
+
+            const moveHandler = (ev) => {
+                if (!isDraggingThumb) return;
+                const trackRect = desktopScrollbar.getBoundingClientRect();
+                const maxThumbTravel = trackRect.width - desktopThumb.offsetWidth;
+                let thumbLeft = ev.clientX - trackRect.left - startX;
+                thumbLeft = Math.min(Math.max(thumbLeft, 0), maxThumbTravel);
+                const ratio = thumbLeft / maxThumbTravel;
+                desktopRail.scrollLeft = ratio * (desktopRail.scrollWidth - desktopRail.clientWidth);
+                updateScrollbarThumb();
+            };
+
+            const upHandler = () => {
+                isDraggingThumb = false;
+            };
+
+            desktopThumb.addEventListener("pointermove", moveHandler);
+            desktopThumb.addEventListener("pointerup", upHandler);
+            desktopThumb.addEventListener("pointercancel", upHandler);
+        });
+
+        desktopRail.addEventListener("scroll", updateScrollbarThumb, { passive: true });
+        window.addEventListener("resize", updateScrollbarThumb);
+        updateScrollbarThumb();
     </script>
 </body>
 
