@@ -20,7 +20,7 @@ export const products = [
       "https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&w=900&q=80",
     hoverImage:
       "https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&w=900&q=80",
-    badges: ["BEST SELLER", "SAVE 10%"],
+    badges: ["BEST SELLER", "SAVE 20%"],
     cardBgClass: "bg-[#efefee]",
   },
   {
