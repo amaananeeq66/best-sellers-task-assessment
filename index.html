@@ -30,7 +30,7 @@
         rel="stylesheet">
 </head>
 
-<body class="bg-[#f7f4ef] font-body text-[#111111]">
+<body class="bg-[#f7f4ef] font-body text-[#111]">
     <main class="min-h-screen">
         <section class="min-h-screen px-6 pt-6 pb-6">
 
@@ -75,14 +75,14 @@
         </section>
     </main>
 
-    <!-- JS: Products + Stars + Badges + createCardMarkup + renderProducts + Mobile Toggle + Desktop Scrollbar -->
+    <!-- JS: Products + Stars + Badges + Hover Images + Card Width + Mobile Toggle + Desktop Scrollbar -->
     <script>
         const products = [
-            { id: 1, name: "OUTSIDE VIBES T-SHIRT SUNSHINE", price: 104.95, reviews: 1234, image: "", hoverImage: "", badges: ["BEST SELLER"], cardBgClass: "bg-[#f4cf2f]" },
-            { id: 2, name: "NIKE BOTTLE OUTSIDE VIBES", price: 104.95, reviews: 1234, image: "", hoverImage: "", badges: ["BEST SELLER", "SAVE 10%"], cardBgClass: "bg-[#efefee]" },
-            { id: 3, name: "REST IN NATURE T-SHIRT CHARCOAL", price: 104.95, reviews: 1234, image: "", hoverImage: "", badges: ["BEST SELLER"], cardBgClass: "bg-[#d6151d]" },
-            { id: 4, name: "OUTSIDE VIBES CAP FOREST GREEN", price: 104.95, reviews: 1234, image: "", hoverImage: "", badges: ["BEST SELLER", "SAVE 10%"], cardBgClass: "bg-[#efb3bf]" },
-            { id: 5, name: "REST IN NATURE T-SHIRT CHARCOAL", price: 104.95, reviews: 1234, image: "", hoverImage: "", badges: ["BEST SELLER"], cardBgClass: "bg-[#efb1ef]" }
+            { id: 1, name: "OUTSIDE VIBES T-SHIRT SUNSHINE", price: 104.95, reviews: 1234, image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=900&q=80", hoverImage: "https://images.unsplash.com/photo-1484704849700-f032a568e944?auto=format&fit=crop&w=900&q=80", badges: ["BEST SELLER"], cardBgClass: "bg-[#f4cf2f]" },
+            { id: 2, name: "NIKE BOTTLE OUTSIDE VIBES", price: 104.95, reviews: 1234, image: "https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&w=900&q=80", hoverImage: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&w=900&q=80", badges: ["BEST SELLER", "SAVE 10%"], cardBgClass: "bg-[#efefee]" },
+            { id: 3, name: "REST IN NATURE T-SHIRT CHARCOAL", price: 104.95, reviews: 1234, image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=900&q=80", hoverImage: "https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?auto=format&fit=crop&w=900&q=80", badges: ["BEST SELLER"], cardBgClass: "bg-[#d6151d]" },
+            { id: 4, name: "OUTSIDE VIBES CAP FOREST GREEN", price: 104.95, reviews: 1234, image: "https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?auto=format&fit=crop&w=900&q=80", hoverImage: "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=900&q=80", badges: ["BEST SELLER", "SAVE 10%"], cardBgClass: "bg-[#efb3bf]" },
+            { id: 5, name: "REST IN NATURE T-SHIRT CHARCOAL", price: 104.95, reviews: 1234, image: "https://images.unsplash.com/photo-1494976388531-d1058494cdd8?auto=format&fit=crop&w=900&q=80", hoverImage: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=900&q=80", badges: ["BEST SELLER"], cardBgClass: "bg-[#efb1ef]" }
         ];
 
         function renderStars() {
@@ -99,9 +99,20 @@
             return `<span class="inline-flex items-center rounded-full border px-[8px] font-condensed text-[10px] py-[4px] ${badgeClass}">${badge}</span>`;
         }
 
+        function getDesktopCardWidth() {
+            const railWidth = desktopRail.clientWidth || 0;
+            const gap = 16;
+            const visibleCards = 4.5;
+            const calculatedWidth = (railWidth - gap * 4) / visibleCards;
+            const maxWidth = window.innerWidth >= 2200 ? 420 : 355;
+            return Math.min(maxWidth, Math.max(250, calculatedWidth));
+        }
+
         function createCardMarkup(product, desktop) {
+            const desktopCardWidth = desktop ? Math.round(getDesktopCardWidth()) : null;
+
             return `
-                <li class="${desktop ? "shrink-0" : "w-full"}">
+                <li class="${desktop ? "shrink-0" : "w-full"}" ${desktop ? `style="width:${desktopCardWidth}px"` : ""}>
                     <article class="group">
                         <a href="#" class="block" draggable="false">
                             <div class="relative mb-2 overflow-hidden rounded-[10px] ${product.cardBgClass}">
@@ -109,18 +120,14 @@
                                     ${product.badges.map(renderBadge).join("")}
                                 </div>
                                 <div class="relative aspect-square overflow-hidden">
-                                    <img src="${product.image}" alt="${product.name}" class="absolute inset-0 h-full w-full object-cover" />
-                                    <img src="${product.hoverImage}" alt="${product.name}" class="absolute inset-0 h-full w-full object-cover opacity-0 group-hover:opacity-100" />
+                                    <img src="${product.image}" alt="${product.name}" class="absolute inset-0 h-full w-full object-cover transition duration-300 group-hover:opacity-0" />
+                                    <img src="${product.hoverImage}" alt="${product.name}" class="absolute inset-0 h-full w-full object-cover opacity-0 transition duration-300 group-hover:opacity-100" />
                                 </div>
                             </div>
                             <div class="space-y-1 p-[8px] md:p-[12px]">
-                                <h2 class="font-condensed text-[16px] md:text-[18px] leading-[0.95] tracking-[0.02em] text-[#1C1D1D]">
-                                    ${product.name}
-                                </h2>
+                                <h2 class="font-condensed text-[16px] md:text-[18px] leading-[0.95] tracking-[0.02em] text-[#1C1D1D]">${product.name}</h2>
                                 <div class="flex items-center gap-1 text-[12px] text-[#9d9892]">
-                                    <div class="flex items-center gap-[1px]">
-                                        ${renderStars()}
-                                    </div>
+                                    <div class="flex items-center gap-[1px]">${renderStars()}</div>
                                     <span class="font-body text-[11px] md:text-[12px]">${product.reviews.toLocaleString()} Reviews</span>
                                 </div>
                                 <p class="font-body text-[16px] font-medium text-[#1C1D1D]">$${product.price.toFixed(2)}</p>
@@ -136,12 +143,10 @@
             const mobilePrimaryProducts = document.getElementById("mobilePrimaryProducts");
             const mobileMoreProducts = document.getElementById("mobileMoreProducts");
 
-            desktopProducts.innerHTML = products.map(product => createCardMarkup(product, true)).join("");
-            mobilePrimaryProducts.innerHTML = products.slice(0, 4).map(product => createCardMarkup(product, false)).join("");
-            mobileMoreProducts.innerHTML = products.slice(4).map(product => createCardMarkup(product, false)).join("");
+            desktopProducts.innerHTML = products.map(p => createCardMarkup(p, true)).join("");
+            mobilePrimaryProducts.innerHTML = products.slice(0, 4).map(p => createCardMarkup(p, false)).join("");
+            mobileMoreProducts.innerHTML = products.slice(4).map(p => createCardMarkup(p, false)).join("");
         }
-
-        renderProducts();
 
 
         const showMoreBtn = document.getElementById("showMoreBtn");
@@ -150,7 +155,6 @@
         function setMobileExpanded(expanded) {
             showMoreBtn.textContent = expanded ? "Show Less" : "Show More";
             mobileMorePanel.setAttribute("aria-hidden", String(!expanded));
-
             if (expanded) {
                 mobileMorePanel.classList.remove("mt-0", "max-h-0", "opacity-0");
                 mobileMorePanel.classList.add("mt-4", "max-h-[1600px]", "opacity-100");
@@ -159,19 +163,13 @@
                 mobileMorePanel.classList.add("mt-0", "max-h-0", "opacity-0");
             }
         }
-
-        showMoreBtn.addEventListener("click", () => {
-            const expanded = showMoreBtn.textContent === "Show Less";
-            setMobileExpanded(!expanded);
-        });
-
+        showMoreBtn.addEventListener("click", () => setMobileExpanded(showMoreBtn.textContent !== "Show More"));
         setMobileExpanded(false);
-
 
         const desktopRail = document.getElementById("desktopRail");
         const desktopScrollbar = document.getElementById("desktopScrollbar");
         const desktopThumb = document.getElementById("desktopThumb");
-
+        renderProducts();
         function updateScrollbarThumb() {
             const visibleWidth = desktopRail.clientWidth;
             const contentWidth = desktopRail.scrollWidth;
@@ -179,41 +177,11 @@
             const thumbWidth = Math.max(desktopScrollbar.clientWidth * ratio, 80);
             const maxThumbTravel = desktopScrollbar.clientWidth - thumbWidth;
             const thumbLeft = (desktopRail.scrollLeft / (contentWidth - visibleWidth)) * maxThumbTravel;
-
             desktopThumb.style.width = `${thumbWidth}px`;
             desktopThumb.style.transform = `translate(${thumbLeft}px, -50%)`;
         }
-
-        let isDraggingThumb = false;
-
-        desktopThumb.addEventListener("pointerdown", (e) => {
-            isDraggingThumb = true;
-            const startX = e.clientX - desktopThumb.getBoundingClientRect().left;
-
-            desktopThumb.setPointerCapture(e.pointerId);
-
-            const moveHandler = (ev) => {
-                if (!isDraggingThumb) return;
-                const trackRect = desktopScrollbar.getBoundingClientRect();
-                const maxThumbTravel = trackRect.width - desktopThumb.offsetWidth;
-                let thumbLeft = ev.clientX - trackRect.left - startX;
-                thumbLeft = Math.min(Math.max(thumbLeft, 0), maxThumbTravel);
-                const ratio = thumbLeft / maxThumbTravel;
-                desktopRail.scrollLeft = ratio * (desktopRail.scrollWidth - desktopRail.clientWidth);
-                updateScrollbarThumb();
-            };
-
-            const upHandler = () => {
-                isDraggingThumb = false;
-            };
-
-            desktopThumb.addEventListener("pointermove", moveHandler);
-            desktopThumb.addEventListener("pointerup", upHandler);
-            desktopThumb.addEventListener("pointercancel", upHandler);
-        });
-
         desktopRail.addEventListener("scroll", updateScrollbarThumb, { passive: true });
-        window.addEventListener("resize", updateScrollbarThumb);
+        window.addEventListener("resize", () => { renderProducts(); updateScrollbarThumb(); });
         updateScrollbarThumb();
     </script>
 </body>
