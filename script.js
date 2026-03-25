@@ -13,10 +13,10 @@ function renderStars() {
   return Array.from(
     { length: 5 },
     () => `
-                <svg aria-hidden="true" viewBox="0 0 20 20" class="h-[12px] w-[12px] fill-[#111111]">
-                    <path d="M10 15.27 16.18 19l-1.64-7.03L20 7.24l-7.19-.62L10 0 7.19 6.62 0 7.24l5.46 4.73L3.82 19z"></path>
-                </svg>
-            `,
+                    <svg aria-hidden="true" viewBox="0 0 20 20" class="h-[12px] w-[12px] fill-[#111111]">
+                        <path d="M10 15.27 16.18 19l-1.64-7.03L20 7.24l-7.19-.62L10 0 7.19 6.62 0 7.24l5.46 4.73L3.82 19z"></path>
+                    </svg>
+                `,
   ).join("");
 }
 
@@ -27,10 +27,10 @@ function renderBadge(badge) {
     : "bg-white text-[#111111] border-black";
 
   return `
-                <span class="inline-flex items-center rounded-full border px-[8px] font-normal py-[4px] font-condensed text-[10px] leading-none tracking-[0.08em] ${badgeClass}">
-                    ${badge}
-                </span>
-            `;
+                    <span class="inline-flex items-center rounded-full border px-[8px] font-normal py-[4px] font-condensed text-[10px] leading-none tracking-[0.08em] ${badgeClass}">
+                        ${badge}
+                    </span>
+                `;
 }
 
 function getDesktopCardWidth() {
@@ -52,46 +52,46 @@ function createCardMarkup(product, desktop) {
   const desktopCardWidth = Math.round(getDesktopCardWidth());
 
   return `
-                <li class="${desktop ? "shrink-0" : "w-full"}" ${desktop ? `style="width:${desktopCardWidth}px"` : ""}>
-                    <article class="group">
-                        <a href="#" class="block" draggable="false">
-                            <div class="relative mb-2 overflow-hidden rounded-[10px] ${product.cardBgClass}">
-                                <div class="absolute inset-x-1.5 top-1.5 z-10 flex flex-wrap items-start justify-between gap-1">
-                                    ${product.badges.map(renderBadge).join("")}
-                                </div>
-                                <div class="relative aspect-square overflow-hidden">
-                                    <img
-                                        src="${product.image}"
-                                        alt="${product.name}"
-                                        loading="lazy"
-                                        draggable="false"
-                                        class="absolute inset-0 h-full w-full object-cover transition duration-300 group-hover:opacity-0"
-                                    >
-                                    <img
-                                        src="${product.hoverImage}"
-                                        alt="${product.name}"
-                                        loading="lazy"
-                                        draggable="false"
-                                        class="absolute inset-0 h-full w-full object-cover opacity-0 transition duration-300 group-hover:opacity-100"
-                                    >
-                                </div>
-                            </div>
-                            <div class="space-y-1 p-[8px] md:p-[12px]">
-                                <h2 class="font-condensed text-[16px] md:text-[18px] lg:text-[18px] leading-[0.95] tracking-[0.02em] text-[#1C1D1D] ${desktop ? "min-h-[26px]" : "min-h-[38px] text-[11px]"}">
-                                    ${product.name}
-                                </h2>
-                                <div class="flex items-center gap-1 text-[12px] text-[#9d9892]">
-                                    <div class="flex items-center gap-[1px]">
-                                        ${renderStars()}
+                    <li class="${desktop ? "shrink-0" : "w-full"}" ${desktop ? `style="width:${desktopCardWidth}px"` : ""}>
+                        <article class="group">
+                            <a href="#" class="block" draggable="false">
+                                <div class="relative mb-2 overflow-hidden rounded-[10px] ${product.cardBgClass}">
+                                    <div class="absolute inset-x-1.5 top-1.5 z-10 flex flex-wrap items-start justify-between gap-1">
+                                        ${product.badges.map(renderBadge).join("")}
                                     </div>
-                                    <span class="font-body text-[11px] md:text-[12px] lg:text-[12px]">${product.reviews.toLocaleString()} Reviews</span>
+                                    <div class="relative aspect-square overflow-hidden">
+                                        <img
+                                            src="${product.image}"
+                                            alt="${product.name}"
+                                            loading="lazy"
+                                            draggable="false"
+                                            class="absolute inset-0 h-full w-full object-cover transition duration-300 group-hover:opacity-0"
+                                        >
+                                        <img
+                                            src="${product.hoverImage}"
+                                            alt="${product.name}"
+                                            loading="lazy"
+                                            draggable="false"
+                                            class="absolute inset-0 h-full w-full object-cover opacity-0 transition duration-300 group-hover:opacity-100"
+                                        >
+                                    </div>
                                 </div>
-                                <p class="font-body text-[16px] font-medium text-[#1C1D1D]">$${product.price.toFixed(2)}</p>
-                            </div>
-                        </a>
-                    </article>
-                </li>
-            `;
+                                <div class="space-y-1 p-[8px] md:p-[12px]">
+                                    <h2 class="font-condensed text-[16px] md:text-[18px] lg:text-[18px] leading-[0.95] tracking-[0.02em] text-[#1C1D1D] ${desktop ? "min-h-[26px]" : "min-h-[38px] text-[11px]"}">
+                                        ${product.name}
+                                    </h2>
+                                    <div class="flex items-center gap-1 text-[12px] text-[#9d9892]">
+                                        <div class="flex items-center gap-[1px]">
+                                            ${renderStars()}
+                                        </div>
+                                        <span class="font-body text-[11px] md:text-[12px] lg:text-[12px]">${product.reviews.toLocaleString()} Reviews</span>
+                                    </div>
+                                    <p class="font-body text-[16px] font-medium text-[#1C1D1D]">$${product.price.toFixed(2)}</p>
+                                </div>
+                            </a>
+                        </article>
+                    </li>
+                `;
 }
 
 function renderProducts() {
