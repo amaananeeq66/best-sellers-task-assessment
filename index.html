@@ -90,12 +90,13 @@
                 </svg>`
             ).join("");
         }
+
+
         function renderBadge(badge) {
             const isSavings = badge.includes("SAVE");
             const badgeClass = isSavings ? "bg-[#6d8676] text-white border-black" : "bg-white text-[#111] border-black";
             return `<span class="inline-flex items-center rounded-full border px-[8px] font-condensed text-[10px] py-[4px] ${badgeClass}">${badge}</span>`;
         }
-
 
         function createCardMarkup(product, desktop) {
             return `
@@ -129,7 +130,21 @@
             `;
         }
 
-        console.log("Products loaded and ready for rendering:", products);
+
+        function renderProducts() {
+            const desktopProducts = document.getElementById("desktopProducts");
+            const mobilePrimaryProducts = document.getElementById("mobilePrimaryProducts");
+            const mobileMoreProducts = document.getElementById("mobileMoreProducts");
+
+
+            desktopProducts.innerHTML = products.map(product => createCardMarkup(product, true)).join("");
+
+
+            mobilePrimaryProducts.innerHTML = products.slice(0, 4).map(product => createCardMarkup(product, false)).join("");
+            mobileMoreProducts.innerHTML = products.slice(4).map(product => createCardMarkup(product, false)).join("");
+        }
+
+        renderProducts();
     </script>
 </body>
 
