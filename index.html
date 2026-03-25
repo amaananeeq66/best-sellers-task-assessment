@@ -75,13 +75,14 @@
         </section>
     </main>
 
-
     <script>
         const products = [
             { id: 1, name: "OUTSIDE VIBES T-SHIRT SUNSHINE", price: 104.95, reviews: 1234, image: "", hoverImage: "", badges: ["BEST SELLER"], cardBgClass: "bg-[#f4cf2f]" },
-            { id: 2, name: "NIKE BOTTLE OUTSIDE VIBES", price: 104.95, reviews: 1234, image: "", hoverImage: "", badges: ["BEST SELLER", "SAVE 10%"], cardBgClass: "bg-[#efefee]" }
+            { id: 2, name: "NIKE BOTTLE OUTSIDE VIBES", price: 104.95, reviews: 1234, image: "", hoverImage: "", badges: ["BEST SELLER", "SAVE 10%"], cardBgClass: "bg-[#efefee]" },
+            { id: 3, name: "REST IN NATURE T-SHIRT CHARCOAL", price: 104.95, reviews: 1234, image: "", hoverImage: "", badges: ["BEST SELLER"], cardBgClass: "bg-[#d6151d]" },
+            { id: 4, name: "OUTSIDE VIBES CAP FOREST GREEN", price: 104.95, reviews: 1234, image: "", hoverImage: "", badges: ["BEST SELLER", "SAVE 10%"], cardBgClass: "bg-[#efb3bf]" },
+            { id: 5, name: "REST IN NATURE T-SHIRT CHARCOAL", price: 104.95, reviews: 1234, image: "", hoverImage: "", badges: ["BEST SELLER"], cardBgClass: "bg-[#efb1ef]" }
         ];
-
 
         function renderStars() {
             return Array.from({ length: 5 }, () =>
@@ -90,7 +91,6 @@
                 </svg>`
             ).join("");
         }
-
 
         function renderBadge(badge) {
             const isSavings = badge.includes("SAVE");
@@ -130,21 +130,41 @@
             `;
         }
 
-
         function renderProducts() {
             const desktopProducts = document.getElementById("desktopProducts");
             const mobilePrimaryProducts = document.getElementById("mobilePrimaryProducts");
             const mobileMoreProducts = document.getElementById("mobileMoreProducts");
 
-
             desktopProducts.innerHTML = products.map(product => createCardMarkup(product, true)).join("");
-
-
             mobilePrimaryProducts.innerHTML = products.slice(0, 4).map(product => createCardMarkup(product, false)).join("");
             mobileMoreProducts.innerHTML = products.slice(4).map(product => createCardMarkup(product, false)).join("");
         }
 
         renderProducts();
+
+        // --- Mobile Show More / Show Less ---
+        const showMoreBtn = document.getElementById("showMoreBtn");
+        const mobileMorePanel = document.getElementById("mobileMorePanel");
+
+        function setMobileExpanded(expanded) {
+            showMoreBtn.textContent = expanded ? "Show Less" : "Show More";
+            mobileMorePanel.setAttribute("aria-hidden", String(!expanded));
+
+            if (expanded) {
+                mobileMorePanel.classList.remove("mt-0", "max-h-0", "opacity-0");
+                mobileMorePanel.classList.add("mt-4", "max-h-[1600px]", "opacity-100");
+            } else {
+                mobileMorePanel.classList.remove("mt-4", "max-h-[1600px]", "opacity-100");
+                mobileMorePanel.classList.add("mt-0", "max-h-0", "opacity-0");
+            }
+        }
+
+        showMoreBtn.addEventListener("click", () => {
+            const expanded = showMoreBtn.textContent === "Show Less";
+            setMobileExpanded(!expanded);
+        });
+
+        setMobileExpanded(false);
     </script>
 </body>
 
