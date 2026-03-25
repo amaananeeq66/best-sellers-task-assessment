@@ -5,12 +5,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Best Sellers</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        display: ['"Source Serif 4"', 'serif'],
+                        condensed: ['"Bebas Neue"', 'sans-serif'],
+                        body: ['Poppins', 'sans-serif']
+                    }
+                }
+            }
+        };
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Poppins:wght@400;500;600&amp;family=Source+Serif+4:wght@700;800&amp;display=swap"
+        rel="stylesheet">
 </head>
 
-<body>
-    <main>
-        <section>
-
+<body class="bg-[#f7f4ef] font-body text-[#111111]">
+    <main class="min-h-screen">
+        <section class="min-h-screen px-6 pt-6 pb-6">
         </section>
     </main>
 </body>
