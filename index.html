@@ -75,7 +75,6 @@
         </section>
     </main>
 
-    <!-- JS: Products + Stars + Badges + Hover Images + Card Width + Mobile Toggle + Desktop Scrollbar -->
     <script>
         const products = [
             { id: 1, name: "OUTSIDE VIBES T-SHIRT SUNSHINE", price: 104.95, reviews: 1234, image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=900&q=80", hoverImage: "https://images.unsplash.com/photo-1484704849700-f032a568e944?auto=format&fit=crop&w=900&q=80", badges: ["BEST SELLER"], cardBgClass: "bg-[#f4cf2f]" },
@@ -85,6 +84,7 @@
             { id: 5, name: "REST IN NATURE T-SHIRT CHARCOAL", price: 104.95, reviews: 1234, image: "https://images.unsplash.com/photo-1494976388531-d1058494cdd8?auto=format&fit=crop&w=900&q=80", hoverImage: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=900&q=80", badges: ["BEST SELLER"], cardBgClass: "bg-[#efb1ef]" }
         ];
 
+
         function renderStars() {
             return Array.from({ length: 5 }, () =>
                 `<svg aria-hidden="true" viewBox="0 0 20 20" class="h-[12px] w-[12px] fill-[#111]">
@@ -92,6 +92,7 @@
                 </svg>`
             ).join("");
         }
+
 
         function renderBadge(badge) {
             const isSavings = badge.includes("SAVE");
@@ -138,6 +139,7 @@
             `;
         }
 
+
         function renderProducts() {
             const desktopProducts = document.getElementById("desktopProducts");
             const mobilePrimaryProducts = document.getElementById("mobilePrimaryProducts");
@@ -149,9 +151,9 @@
         }
 
 
+
         const showMoreBtn = document.getElementById("showMoreBtn");
         const mobileMorePanel = document.getElementById("mobileMorePanel");
-
         function setMobileExpanded(expanded) {
             showMoreBtn.textContent = expanded ? "Show Less" : "Show More";
             mobileMorePanel.setAttribute("aria-hidden", String(!expanded));
@@ -166,10 +168,11 @@
         showMoreBtn.addEventListener("click", () => setMobileExpanded(showMoreBtn.textContent !== "Show More"));
         setMobileExpanded(false);
 
+
         const desktopRail = document.getElementById("desktopRail");
         const desktopScrollbar = document.getElementById("desktopScrollbar");
         const desktopThumb = document.getElementById("desktopThumb");
-        renderProducts();
+
         function updateScrollbarThumb() {
             const visibleWidth = desktopRail.clientWidth;
             const contentWidth = desktopRail.scrollWidth;
@@ -180,9 +183,36 @@
             desktopThumb.style.width = `${thumbWidth}px`;
             desktopThumb.style.transform = `translate(${thumbLeft}px, -50%)`;
         }
+
+
+        let isDraggingThumb = false;
+        let dragStartX = 0;
+
+        desktopThumb.addEventListener("pointerdown", (e) => {
+            e.preventDefault();
+            isDraggingThumb = true;
+            dragStartX = e.clientX - desktopThumb.getBoundingClientRect().left;
+            desktopThumb.setPointerCapture(e.pointerId);
+        });
+
+        desktopThumb.addEventListener("pointermove", (e) => {
+            if (!isDraggingThumb) return;
+            const trackRect = desktopScrollbar.getBoundingClientRect();
+            const thumbWidth = desktopThumb.offsetWidth;
+            const maxTravel = trackRect.width - thumbWidth;
+            let thumbLeft = Math.min(Math.max(e.clientX - trackRect.left - dragStartX, 0), maxTravel);
+            const ratio = thumbLeft / maxTravel;
+            desktopRail.scrollLeft = ratio * (desktopRail.scrollWidth - desktopRail.clientWidth);
+        });
+
+        ["pointerup", "pointercancel"].forEach(ev =>
+            desktopThumb.addEventListener(ev, () => { isDraggingThumb = false; desktopThumb.releasePointerCapture(); })
+        );
+
         desktopRail.addEventListener("scroll", updateScrollbarThumb, { passive: true });
         window.addEventListener("resize", () => { renderProducts(); updateScrollbarThumb(); });
         updateScrollbarThumb();
+        renderProducts();
     </script>
 </body>
 
