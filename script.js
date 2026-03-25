@@ -119,7 +119,7 @@ const products = [
     badges: ["BEST SELLER", "SAVE 10%"],
     cardBgClass: "bg-[#d8d9ef]",
   },
-];
+];    
 
 const desktopProducts = document.getElementById("desktopProducts");
 const mobilePrimaryProducts = document.getElementById("mobilePrimaryProducts");
@@ -134,9 +134,9 @@ function renderStars() {
   return Array.from(
     { length: 5 },
     () => `
-                <svg aria-hidden="true" viewBox="0 0 20 20" class="h-[12px] w-[12px] fill-[#111111]">
+                <svg  aria-hidden="true" viewBox="0 0 20 20" class="h-[12px] w-[12px] fill-[#111111]">
                     <path d="M10 15.27 16.18 19l-1.64-7.03L20 7.24l-7.19-.62L10 0 7.19 6.62 0 7.24l5.46 4.73L3.82 19z"></path>
-                </svg>
+      </svg>
             `,
   ).join("");
 }
